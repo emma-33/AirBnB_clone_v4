@@ -1,11 +1,12 @@
 $(document).ready(function() {
-  const Amenities = [];
+  const amenities = [];
   $('input[type=checkbox]').click(function() {
     if (this.checked) {
-      Amenities.push($(this).attr('data-id'))
+      amenities.push($(this).attr('data-name'));
     } else {
-      Amenities.pop($(this).attr('data-id'))
+      const index = amenities.indexOf($(this).attr('data-name'));
+      amenities.splice(index, 1);
     }
-    $('.amenities h4').text(Amenities.join(', '));
+    $('.amenities h4').text(amenities.join(', '));
     });
 });
