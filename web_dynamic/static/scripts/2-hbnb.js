@@ -1,20 +1,26 @@
 $(document).ready(function() {
-  const amenities = [];
-  $('input[type=checkbox]').click(function() {
+  let listeAmenitiesSelectionnees = {};
+
+  $('.amenities input[type="checkbox"]').change(function() {
     if (this.checked) {
-      amenities.push($(this).attr('data-name'));
+      listeAmenitiesSelectionnees[$(this).data('id')] = $(this).data('name');
     } else {
-      const index = amenities.indexOf($(this).attr('data-name'));
-      amenities.splice(index, 1);
+      delete listeAmenitiesSelectionnees[$(this).data('id')];
     }
-    $('.amenities h4').text(amenities.join(', '));
+
+    $('.amenities h4').text(Object.values(listeAmenitiesSelectionnees).join(', '));
   });
-  $.get('http://0.0.0.0:5001/api/v1/status/', function(data, status){
-    if (data.status == 'OK') {
-      $('div#api_status').addClass('available');
-    } else {
-      $('div#api_status').removeClass('available');
-    }
+
+  $.get("http://127.0.0.1:5001/api/v1/status/")
+    .done(function(data, textStatus) {
+      if (data.status === "OK") {
+        $('#api_status').addClass("available");
+      } else {
+        $('#api_status').removeClass("available");
+      }
+    })
+    .fail(function() {
+      $('#api_status').removeClass("available");
+      alert('get("http://127.0.0.1:5001/api/v1/status/") à échoué');
+    });
   });
-});
-  
